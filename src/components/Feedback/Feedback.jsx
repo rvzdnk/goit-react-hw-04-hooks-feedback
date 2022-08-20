@@ -1,4 +1,8 @@
+import FeedbackOptions from "components/FeedbackOptions/FeedbackOptions";
 import React from "react";
+
+import Statistics from "components/Statistics/Statistics";
+import Section from "components/Section/Section";
 
 class Feedback extends React.Component{
     state = {
@@ -21,31 +25,22 @@ class Feedback extends React.Component{
     };
 
     render() {
+        const {good, neutral, bad} = this.state;
+        const options = Object.keys(this.state);
+
         return(
             <div>
-                <h4>Please leave feedback</h4>
-                <div>
-                    <button onClick={()=>{
-                        this.incraseStateField('good');}}>
-                            Good
-                    </button>
-                    <button onClick={()=>{
-                        this.incraseStateField('neutral');}}>
-                            Neutral
-                    </button>
-                    <button onClick={()=>{
-                        this.incraseStateField('bad');}}>
-                            Bad
-                    </button>
-                </div>
-                <h5>Statistics</h5>
-                <div>
-                    <p>Good: {this.state.good}</p>
-                    <p>Neutral: {this.state.neutral}</p>
-                    <p>Bad: {this.state.bad}</p>
-                    <p>Total: {this.countTotalFeedback()}</p>
-                    <p>Positive feedback: {this.countPositiveFeedback()}%</p>
-                </div>
+            <Section title ="Please leave feedback"/>
+                <FeedbackOptions
+                    options={options}
+                    onLeaveFeedback={this.incraseStateField}/>
+            <Section title ="Statistics"/>
+                <Statistics
+                    good={good}
+                    neutral={neutral}
+                    bad={bad}
+                    total={this.countTotalFeedback}
+                    positivePercentage={this.countPositiveFeedback}/>
             </div>
         )
     }
