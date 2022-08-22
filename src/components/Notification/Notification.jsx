@@ -3,11 +3,11 @@ import React from "react";
 class Notification extends React.Component{
     render() {
         const { message } = this.props;
-        return
+        return(
         <p>
             {message || ''}
-        </p>;
-    }
+        </p>
+    )}
 };
 
 export default Notification;
