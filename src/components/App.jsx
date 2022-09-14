@@ -1,65 +1,61 @@
 import React, { Component } from 'react';
+import { useState } from 'react';
+
+import styles from './App.module.css';
 
 import FeedbackOptions from "components/FeedbackOptions/FeedbackOptions";
 import Statistics from "components/Statistics/Statistics";
 import Section from "components/Section/Section";
 import Notification from "components/Notification/Notification";
-import styles from './App.module.css';
 
 
-export class App extends Component{
 
-  state = {
-    good: 0,
-    neutral: 0,
-    bad: 0
+
+export const App = () =>{
+  
+  const [good, setGood] = useState(0);
+  const [neutral, setNeutral] = useState(0);
+  const [bad, setBad] = useState(0);
+
+  const countTotalFeedback = () => good + neutral + bad;
+  const countPositiveFeedback = Math.round((good / countTotalFeedback()) * 100);
+
+  const statsValues = [
+    ['Good', good],
+    ['Neutral', neutral],
+    ['Bad', bad],
+    ['Total: ', good + neutral + bad],
+    ['Positive feedback', `${countPositiveFeedback} %`],
+  ];
+
+  const goodIncrement = () => {
+    setGood(good + 1);
   };
 
-  incraseStateField = stateField => {
-    this.setState({...this.state, [stateField]: this.state[stateField]+1});
+  const neutralIncrement = () => {
+    setNeutral(neutral + 1);
   };
 
-  countTotalFeedback = () => {
-    const {good, neutral, bad} = this.state;
-    return good + neutral + bad;
+  const badIncrement = () => {
+    setBad(bad + 1);
   };
 
-  countPositiveFeedback = () => {
-    return  this.countTotalFeedback() > 0 ? ((this.state.good/this.countTotalFeedback())*100).toFixed(2) : 0;
-  };
-
-  renderStatisticsSection =() => {
-    const {good, neutral, bad} = this.state;
-
-    if (this.countTotalFeedback() === 0){
-        return <Notification message="There is no feedback"/>;
-    }
-    return (
-    <Section title ="Statistics">
-        <Statistics
-            good={good}
-            neutral={neutral}
-            bad={bad}
-            total={this.countTotalFeedback()}
-            positivePercentage={this.countPositiveFeedback()}/>
-    </Section>
-    )
-  };
-
-  render() {
-    const options = Object.keys(this.state);
-    const {container} = styles;
+  const {container} = styles;
 
     return(
         <div className={container}>
         <Section title ="Please leave feedback">
             <FeedbackOptions
-                options={options}
-                onLeaveFeedback={this.incraseStateField}/>
+              goodIncrement={goodIncrement}
+              neutralIncrement={neutralIncrement}
+              badIncrement={badIncrement}
+            />
         </Section>
-        {this.renderStatisticsSection()}
-        </div>
+        {countTotalFeedback() !== 0
+          ? (<Statistics statsValues={statsValues} />)
+          : (<Notification message="There is no feedback" />)
+        }
+      </div>
     )
-  }
 };
 

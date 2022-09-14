@@ -1,29 +1,28 @@
 import React from "react";
+
 import styles from './FeedbackOptions.module.css';
 
-class FeedbackOptions extends React.Component{
-    render() {
-        const {options, onLeaveFeedback} = this.props;
-        const {buttons__container, buttons__item} = styles;
-        return(
-            <div>
-                <div className={buttons__container}>
-                    <button className={buttons__item} onClick={()=>{
-                        onLeaveFeedback(options[0]);}}>
-                            Good
-                    </button>
-                    <button className={buttons__item} onClick={()=>{
-                        onLeaveFeedback(options[1]);}}>
-                            Neutral
-                    </button>
-                    <button className={buttons__item} onClick={()=>{
-                        onLeaveFeedback(options[2]);}}>
-                            Bad
-                    </button>
-                </div>
-            </div>
-        )
-    }
+export const FeedbackOptions = ({
+  goodIncrement,
+  neutralIncrement,
+  badIncrement,
+    }) =>{
+
+    const {buttons__container, buttons__item} = styles;
+
+    return (
+        <div className={buttons__container}>
+            <button className={buttons__item} onClick={goodIncrement}>
+                Good
+            </button>
+            <button className={buttons__item} onClick={neutralIncrement}>
+                Neutral
+            </button>
+            <button className={buttons__item} onClick={badIncrement}>
+                Bad
+            </button>
+        </div>
+    )
 };
 
 export default FeedbackOptions;
